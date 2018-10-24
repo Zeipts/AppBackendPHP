@@ -89,7 +89,7 @@ class ApiController extends Controller
     {
         $user = Auth::user()->first();
         $con = new ZeiptConnect(env('ZEIPT_TOKEN'), env('ZEIPT_USER'), env('ZEIPT_PASS'));
-        $response = $con->GetReceipts($user->cid, Carbon::now()->toIso8601String(), Carbon::now()->addMonths(2)->toIso8601String());
+        $response = $con->GetReceipts($user->cid, Carbon::now()->subMonths(2)->toIso8601String(), Carbon::now()->toIso8601String());
         return response()->json($response);
     }
 
