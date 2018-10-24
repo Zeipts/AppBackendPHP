@@ -11,7 +11,7 @@
 body {
     margin: 43px 0 0 0;
     width: 100%;
-    font-family: $font-family-sans-serif;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     text-align: left;
     color: black;
     font-size: 18px;
@@ -27,7 +27,9 @@ body {
 .banner {
     position: fixed;
     display: flex;
-    background-color: #0F2841;
+    color:#277098;
+    background-color: #f5f7fb;
+    border-bottom:1px solid rgba(39, 112, 152, 0.2);
     left: 0;
     right: 0;
     height: 43px;
@@ -77,19 +79,15 @@ body {
     text-align: right;
 }
 
-.column.left {
-    img {
-        float: left;
-        height: 30px;
-        width: unset;
-    }
+.column.left img {
+    float: left;
+    height: 30px;
+    width: unset;
 }
 
-.column.center {
-    img {
-        box-shadow: 0 0 50px $zeipt-green;
-        border-radius: 100px;
-    }
+.column.center img {
+    box-shadow: 0 0 50px #3CBF71;
+    border-radius: 100px;
 }
 
 .approve-form {
@@ -104,8 +102,9 @@ body {
 }
 
 .terms-approve {
-    background-color: $zeipt-green;
+    background-color: #3CBF71;
     color: white;
+    border-radius: 40px;
     cursor: pointer;
     transition: all .2s;
     font-size: 16px;
@@ -113,10 +112,62 @@ body {
     width: 100%;
     border: none;
     padding: 20px;
-    border-radius:40px;
 }
 
 .terms-approve:disabled {
     color: #585858;
     background-color: buttonface;
+}
+
+.success {
+    background-color: rgba(60, 191, 113, 1);
+    border-radius: 500px;
+    text-align: center;
+    width: 200px;
+    height: 200px;
+    margin: auto;
+    margin-top: 40px;
+}
+
+.success img {
+    height: 160px;
+    transition: 0.3s;
+    transform: translateY(-30px) rotateZ(10deg);
+}
+
+.success h2 {
+    margin: auto;
+    transform: translateY(-30px);
+    color: white;
+}
+
+h3.success-note {
+    text-align: center;
+}
+
+.error {
+    background-color: rgb(191, 60, 60);
+    border-radius: 500px;
+    text-align: center;
+    width: 200px;
+    height: 200px;
+    margin: auto;
+    margin-top: 40px;
+    position: relative;
+}
+
+.error h2 {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    margin: auto;
+}
+h3.success-note {
+    text-align: center;
+}
+
+.spacer {
+    height:100px;
 }

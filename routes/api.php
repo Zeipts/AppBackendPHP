@@ -14,8 +14,11 @@ use Illuminate\Http\Request;
 */
 
 Route::middleware('auth:api')->group(function() {
-    Route::post('/refreshLogin', 'ApiController@refreshLogin');
+    Route::post('/refreshLogin/{cid}', 'ApiController@refreshLogin');
+    Route::post('/cards/{cid}', 'ApiController@getCards');
+    Route::post('/deletecard/{cid}/{cardid}', 'ApiController@removeCard');
+    Route::post('/receipts/{cid}', 'ApiController@getReceipts');
 });
 
-Route::post('/registercustomer', 'ApiController@handleRegister');
-Route::post('/login', 'ApiController@handleLogin');
+Route::post('/registercustomer/', 'ApiController@handleRegister');
+Route::post('/login/', 'ApiController@handleLogin');

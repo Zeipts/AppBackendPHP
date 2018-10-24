@@ -11,11 +11,12 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
 Route::middleware('auth:api')->group(function () {
     Route::get('/registercard/{cid}', 'WebController@showTerms');
     Route::get('/doregistercard', 'WebController@presentCardForm')->name('register-card');
 });
+
+Route::get('/SuccessPage', 'WebController@cardSuccess');
+Route::get('/CancelPage', 'WebController@cardCancelled');
+Route::get('/FailPage', 'WebController@cardFailed');

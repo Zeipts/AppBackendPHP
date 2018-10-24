@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\User;
 use App\Session;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Zeipt\ZeiptConnect;
+use Carbon\Carbon;
 
 class ApiController extends Controller
 {
@@ -29,6 +31,16 @@ class ApiController extends Controller
         return response()->json([
             'success' => 0,
             'msg' => 'Wrong username or password'
+        ]);
+    }
+
+    public function refreshLogin(Request $request)
+    {
+        $user = Auth::user()->first();
+        $session = $this->makeSession($user);
+        return response()->json([
+            'success' => 1,
+            'session_token' => $session->token
         ]);
     }
 
@@ -71,6 +83,40 @@ class ApiController extends Controller
             'success' => 0,
             'msg' => $msg
         ]);
+    }
+
+    public function getReceipts(Request $request)
+    {
+        $user = Auth::user()->first();
+        $con = new ZeiptConnect(env('ZEIPT_TOKEN'), env('ZEIPT_USER'), env('ZEIPT_PASS'));
+        $response = $con->GetReceipts($user->cid, Carbon::now()->toIso8601String(), Carbon::now()->addMonths(2)->toIso8601String());
+        return response()->json($response);
+    }
+
+    public function getCards(Request $request)
+    {
+        $user = Auth::user()->first();
+        return response()->json([
+            'success' => 1,
+            'cards' => $user->cards
+        ]);
+    }
+
+    public function removeCard(Request $request, $cid, $cardid)
+    {
+       $user = Auth::user()->first();
+       if ($user->cards()->where('id', $cardid)) {
+           $user->cards()->where('id', $cardid)->delete();
+           return response()->json([
+                'success' => 1,
+                'msg' => 'Card removed'
+           ]);
+       } else {
+           return response()->json([
+               'success' => 0,
+               'msg' => 'No card to remove'
+           ]);
+       }
     }
 
     private function makeSession(User $customer)
