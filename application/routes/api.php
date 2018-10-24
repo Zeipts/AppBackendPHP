@@ -21,4 +21,4 @@ Route::middleware('auth:api')->group(function() {
 });
 
 Route::post('/registercustomer/', 'ApiController@handleRegister');
-Route::post('/login/', 'ApiController@handleLogin');
+Route::post('/login', 'ApiController@handleLogin');
