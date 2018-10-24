@@ -10,3 +10,10 @@ Homestead.yaml
 /application/npm-debug.log
 /application/yarn-error.log
 /application/.env
+/logs
+/old_system
+/old_backup
+zzz.zip
+/sessions
+/upload_tmp_dir
+/data
