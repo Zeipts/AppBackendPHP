@@ -1,0 +1,3 @@
+[submodule "application/app/Services/Zeipt"]
+	path = application/app/Services/Zeipt
+	url = https://github.com/Zeipts/ZeiptConnectPHP.git
