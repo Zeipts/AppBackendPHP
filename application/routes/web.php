@@ -12,7 +12,7 @@
 */
 
 
-Route::middleware('auth:api')->group(function () {
+Route::middleware('auth:api', 'cors')->group(function () {
     Route::get('/registercard/{cid}', 'WebController@showTerms');
     Route::get('/doregistercard', 'WebController@presentCardForm')->name('register-card');
 });

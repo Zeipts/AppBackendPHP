@@ -54,17 +54,18 @@ class ApiController extends Controller
                 'msg' => "Customer already exists"
             ]);
         }
-        $customer = User::create([
-            'email' => $email,
-            'password' => Hash::make($password),
-            'cid' => md5(time() . $email)
-        ]);
-        $msg = "Failed to create customer!";
-        if ($customer) {
-            //Register gcid with Zeipt
-            $con = new ZeiptConnect(env('ZEIPT_TOKEN'), env('ZEIPT_USER'), env('ZEIPT_PASS'));
-            $msg = "Failed to register customer with zeipt";
-            if ($con->RegisterCustomer($customer->cid)) {
+        $cid = md5(time() . $email);
+        //Register gcid with Zeipt
+        $con = new ZeiptConnect(env('ZEIPT_TOKEN'), env('ZEIPT_USER'), env('ZEIPT_PASS'));
+        $msg = "Failed to register customer with zeipt";
+        if ($con->RegisterCustomer($cid)) {
+            $customer = User::create([
+                'email' => $email,
+                'password' => Hash::make($password),
+                'cid' => $cid
+            ]);
+            $msg = "Failed to create customer!";
+            if ($customer) {
                 $customer->registered = true;
                 $customer->save();
                 $session = $this->makeSession($customer);
