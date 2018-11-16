@@ -39,6 +39,7 @@
             The customer party can terminate the agreement directly with the service he/she now have agreed to, after accepting these terms &amp; conditions.
             If the customer so wishes to terminate the agreement, he/she is recommended to log onto the Zeipt AS app and select ”Terminate receipt service” in the settings menu. Zeipt AS will confirm the customer’s termination by email, on the email address given by the customer’s upon creation of user in the app. Alternatively, the customer can send a written termination to Zeipts Email or it’s mail address, note that the customer must state it’s customer id in the Zeipt AS app to successfully terminate the service. Upon Termination of the receipt service, Zeipt AS will delete all the card tokens created under that user id and all of its digital receipt data, captured, processed and routed by Zeipt AS from the time of the original agreement of these terms &amp; conditions.
         </p>
+        <div class="spacer" style="height:150px;"></div>
         <form class="approve-form" method="GET" action={{route('register-card')}}>
             <input type="hidden" name="token" value="{{$user->session->first()->token}}">
             <button class="terms-approve" disabled>

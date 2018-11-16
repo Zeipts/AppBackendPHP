@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 use App\Session;
+use App\User;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -28,9 +29,11 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Auth::viaRequest('legacy', function ($request) {
-            $session = Session::where('token', $request->token)->where('expired', false)->first();
-            if ($session !== null) {
-                return $session->user;
+            if (isset($request->token)) {
+                $session = Session::where('token', $request->token)->where('expired', false)->first();
+                if ($session !== null) {
+                    return User::where('id', $session->user_id)->firstOrFail();
+                }
             }
             return null;
         });

@@ -12,13 +12,13 @@ class WebController extends Controller
 {
     public function showTerms(Request $request)
     {
-        $user = Auth::user()->first();
+        $user = Auth::user();
         return view('cards.terms', compact('user'));
     }
 
     public function presentCardForm(Request $request)
     {
-        $user = Auth::user()->first();
+        $user = Auth::user();
         $con = new ZeiptConnect(env('ZEIPT_TOKEN'), env('ZEIPT_USER'), env('ZEIPT_PASS'));
         return view('cards.card', [
             'content' => $con->CreateCardRegister($user->cid, '/', '/', '/')
@@ -31,9 +31,9 @@ class WebController extends Controller
         $user = User::where('cid', $gcid)->first();
         $transfer = $request->zeipt_card_transnr;
         $con = new ZeiptConnect(env('ZEIPT_TOKEN'), env('ZEIPT_USER'), env('ZEIPT_PASS'));
-        $cards = $con->GetCard($gcid, $transfer);
-        if ($cards) {
-            foreach ($cards as $card) {
+        $data = $con->GetCard($gcid, $transfer);
+        if ($data && count($data->cards)) {
+            foreach ($data->cards as $card) {
                 Card::create([
                     'user_id' => $user->id,
                     'lastfour' => $card->last_digits,

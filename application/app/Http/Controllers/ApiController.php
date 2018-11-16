@@ -36,7 +36,7 @@ class ApiController extends Controller
 
     public function refreshLogin(Request $request)
     {
-        $user = Auth::user()->first();
+        $user = Auth::user();
         $session = $this->makeSession($user);
         return response()->json([
             'success' => 1,
@@ -47,6 +47,14 @@ class ApiController extends Controller
     public function handleRegister(Request $request)
     {
         $email = $request->name;
+
+        if (empty($email)) {
+            return response()->json([
+                'success' => 0,
+                'msg' => "Missing parameter email"
+            ]);
+        }
+
         $password = $request->password;
         if (User::where('email', $email)->first()) {
             return response()->json([
@@ -54,6 +62,14 @@ class ApiController extends Controller
                 'msg' => "Customer already exists"
             ]);
         }
+
+        if (empty($password)) {
+            return response()->json([
+                'success' => 0,
+                'msg' => "Missing parameter password"
+            ]);
+        }
+
         $cid = md5(time() . $email);
         //Register gcid with Zeipt
         $con = new ZeiptConnect(env('ZEIPT_TOKEN'), env('ZEIPT_USER'), env('ZEIPT_PASS'));
@@ -88,7 +104,7 @@ class ApiController extends Controller
 
     public function getReceipts(Request $request)
     {
-        $user = Auth::user()->first();
+        $user = Auth::user();
         $con = new ZeiptConnect(env('ZEIPT_TOKEN'), env('ZEIPT_USER'), env('ZEIPT_PASS'));
         $response = $con->GetReceipts($user->cid, Carbon::now()->subMonths(2)->toIso8601String(), Carbon::now()->toIso8601String());
         return response()->json($response);
@@ -96,7 +112,7 @@ class ApiController extends Controller
 
     public function getCards(Request $request)
     {
-        $user = Auth::user()->first();
+        $user = Auth::user();
         return response()->json([
             'success' => 1,
             'cards' => $user->cards
@@ -105,7 +121,8 @@ class ApiController extends Controller
 
     public function removeCard(Request $request, $cid, $cardid)
     {
-       $user = Auth::user()->first();
+       $user = Auth::user();
+       $con = new ZeiptConnect(env('ZEIPT_TOKEN'), env('ZEIPT_USER'), env('ZEIPT_PASS'));
        if ($user->cards()->where('id', $cardid)) {
            $user->cards()->where('id', $cardid)->delete();
            return response()->json([
