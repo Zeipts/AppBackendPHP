@@ -105,8 +105,11 @@ class ApiController extends Controller
     public function getReceipts(Request $request)
     {
         $user = Auth::user();
+        \Log::info("Receipts request made for " . $user->cid . " user_id " . $user->id);
         $con = new ZeiptConnect(env('ZEIPT_TOKEN'), env('ZEIPT_USER'), env('ZEIPT_PASS'));
         $response = $con->GetReceipts($user->cid, Carbon::now()->subMonths(2)->toIso8601String(), Carbon::now()->toIso8601String());
+        \Log::info("Receipt response: ");
+        \Log::info(json_encode($response));
         return response()->json($response);
     }
 
