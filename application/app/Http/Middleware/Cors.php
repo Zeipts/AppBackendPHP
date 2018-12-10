@@ -15,18 +15,20 @@ class Cors
      */
     public function handle($request, Closure $next)
     {
-        if ($request->server('HTTP_REFERER') == 'https://sbanken.logobror.no/') {
-            return $next($request)
-                ->header('Access-Control-Allow-Origin', 'https://sbanken.logobror.no')
-                ->header('Vary', 'Origin')
-                ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH')
-                ->header('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, X-Auth-Token, Authorization, Origin');
+        $possibleOrigins = [
+            'https://sbanken.logobror.no',
+            'https://zeipt.logobror.no'
+        ];
+
+        if (in_array($request->header('origin'), $possibleOrigins)) {
+            $origin = $request->header('origin');
         } else {
-            return $next($request)
-                ->header('Access-Control-Allow-Origin', 'https://zeipt.logobror.no')
-                ->header('Vary', 'Origin')
-                ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH')
-                ->header('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, X-Auth-Token, Authorization, Origin');
+            $origin = 'https://zeipt.logobror.no';
         }
+        return $next($request)
+            ->header('Access-Control-Allow-Origin', $origin)
+            ->header('Vary', 'Origin')
+            ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH')
+            ->header('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, X-Auth-Token, Authorization, Origin');
     }
 }
