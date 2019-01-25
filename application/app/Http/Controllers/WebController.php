@@ -6,6 +6,7 @@ use App\Card;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Zeipt\ZeiptConnect;
 
 class WebController extends Controller
@@ -20,9 +21,10 @@ class WebController extends Controller
     {
         $user = Auth::user();
         $con = new ZeiptConnect(env('ZEIPT_TOKEN'), env('ZEIPT_USER'), env('ZEIPT_PASS'));
-        return view('cards.card', [
+        /*return view('cards.card', [
             'content' => $con->CreateCardRegister($user->cid, '/', '/', '/')
-        ]);
+        ]);*/
+        return Redirect::to($con->GetCardRegisterUrl($user->cid));
     }
 
     public function cardSuccess(Request $request)
