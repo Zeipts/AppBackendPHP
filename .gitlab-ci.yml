@@ -1,0 +1,24 @@
+image: docker:18
+stages:
+  - build
+  - build-master
+services:
+  - docker:dind
+before_script:
+  - docker login -u $CI_GITLAB_USERNAME -p $CI_GITLAB_API_TOKEN_DEV $CI_HOST
+build:
+  stage: build
+  script:
+    - docker build --pull -t "$CI_IMAGE:$CI_COMMIT_SHORT_SHA" .
+    - docker push "$CI_IMAGE:$CI_COMMIT_SHORT_SHA"
+  except:
+    - master
+build-master:
+  stage: build-master
+  before_script:
+    - docker login -u $CI_GITLAB_USERNAME -p $CI_GITLAB_API_TOKEN $CI_HOST
+  script:
+    - docker build --pull -t "$CI_IMAGE" .
+    - docker push "$CI_IMAGE"
+  only:
+    - master
