@@ -13,8 +13,8 @@ RUN npm audit fix
 #Generate new key
 RUN cp .env.base .env
 RUN php artisan key:generate
-
-ENTRYPOINT ["/docker-entrypoint.sh"]
+RUN chmod a+x docker-entrypoint.sh
+ENTRYPOINT ["./docker-entrypoint.sh"]
 CMD php artisan serve --host=0.0.0.0 --port=8181
 
 EXPOSE 8181
