@@ -11,6 +11,7 @@ let mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/assets/js/app.js', '../public_html/js')
-   .sass('resources/assets/sass/app.scss', '../public_html/css')
-    .copyDirectory('resources/assets/img', '../public_html/img');
+mix.setPublicPath('../public_html/')
+    .js('resources/assets/js/app.js', 'js')
+        .sass('resources/assets/sass/app.scss', 'css')
+            .copyDirectory('resources/assets/img', 'img');
